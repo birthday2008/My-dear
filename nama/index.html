@@ -1,161 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سر الحب: اختبار الذاكرة</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-
-    <div id="countdown-container">
-        <h1>... مفاجأة قلبي تنتظرك في ...</h1>
-        <div id="countdown-timer"></div>
-    </div>
-    
-    <div id="quiz-container" class="hidden-element">
-        <div class="quiz-box">
-            <h2>
-                <span class="heart-icon">❤️</span> 
-                اختبار الذاكرة: هل تتذكرين التفاصيل؟
-            </h2>
-            
-            <div class="question-group">
-                <h3>السؤال الأول: يوم تعارفنا الذي لا يُنسى؟</h3>
-                <div class="date-selectors">
-                    <label>السنة:</label>
-                    <select id="select-year" class="romantic-select"></select>
-                    <label>الشهر:</label>
-                    <select id="select-month" class="romantic-select"></select>
-                    <label>اليوم:</label>
-                    <select id="select-day" class="romantic-select"></select>
-                </div>
-            </div>
-
-            <div class="question-group">
-                <h3>السؤال الثاني: الساعة والدقيقة لأول رسالة بيننا؟</h3>
-                <div class="time-selectors">
-                    <label>الساعة (1-24):</label>
-                    <select id="select-hour" class="romantic-select"></select>
-                    <span class="colon">:</span>
-                    <label>الدقيقة (0-59):</label>
-                    <select id="select-minute" class="romantic-select"></select>
-                </div>
-            </div>
-            
-            <button onclick="checkAnswers()" class="romantic-button">أفتح صندوق الأسرار</button>
-            <p id="feedback" class="feedback-message"></p>
-        </div>
-    </div>
-
-    <script>
-        // =========================================================
-        // 🛠️ الإعدادات الهامة: قم بالتعديل هنا فقط
-        // =========================================================
-        
-        // 1. تاريخ فتح الموقع (مثال: 13 ديسمبر 2025، منتصف الليل)
-        // ملاحظة: الشهر يبدأ من 0 (0=يناير، 11=ديسمبر)
-        const TARGET_DATE = new Date("December 12, 2025 01:42:50").getTime(); 
-
-        // 2. الأجوبة الصحيحة
-        const CORRECT_DATE = "2024/8/23"; // السنة/الشهر/اليوم
-        const CORRECT_TIME = "1:29";     // الساعة:الدقيقة (بصيغة رقمية)
-        
-        // 3. نطاق خيارات التاريخ/الوقت
-        const YEAR_RANGE = { start: 2020, end: 2025 };
-        const HOUR_RANGE = { start: 1, end: 24 };
-        const MINUTE_RANGE = { start: 0, end: 59 };
-
-        // =========================================================
-        
-        const countdownContainer = document.getElementById('countdown-container');
-        const quizContainer = document.getElementById('quiz-container');
-
-        // --- وظيفة إنشاء قوائم الاختيار (Select) ---
-        const createOptions = (id, start, end) => {
-            const selectElement = document.getElementById(id);
-            let optionsHTML = '';
-            for (let i = start; i <= end; i++) {
-                const value = (i < 10 && id !== 'select-year') ? `${i}` : `${i}`; 
-                optionsHTML += `<option value="${i}">${value}</option>`;
-            }
-            selectElement.innerHTML = optionsHTML;
-        };
-
-        // --- وظيفة التحقق من الإجابات ---
-        window.checkAnswers = () => {
-            const year = document.getElementById('select-year').value;
-            const month = document.getElementById('select-month').value;
-            const day = document.getElementById('select-day').value;
-            const hour = parseInt(document.getElementById('select-hour').value);
-            const minute = parseInt(document.getElementById('select-minute').value);
-
-            // تجميع الإجابات ومقارنتها
-            const submittedDate = `${year}/${parseInt(month)}/${parseInt(day)}`;
-            const submittedTime = `${hour}:${minute}`;
-
-            const feedback = document.getElementById('feedback');
-            
-            if (submittedDate === CORRECT_DATE && submittedTime === CORRECT_TIME) {
-                feedback.innerHTML = '🎉 الإجابة صحيحة يا ذاكرتي الجميلة! يتم الانتقال الآن...';
-                feedback.style.color = '#38b000';
-                // الانتقال للصفحة الأولى من الرسائل
-                setTimeout(() => {
-                    window.location.href = 'messages.html'; 
-                }, 2000); 
-            } else {
-                feedback.innerHTML = '💔 آسف، هذه التفاصيل مهمة جداً! حاول مرة أخرى.';
-                feedback.style.color = '#e71d36';
-            }
-        };
-
-        // --- وظيفة تهيئة واجهة الأسئلة ---
-        const initializeQuiz = () => {
-            createOptions('select-year', YEAR_RANGE.start, YEAR_RANGE.end);
-            createOptions('select-month', 1, 12);
-            createOptions('select-day', 1, 31);
-            createOptions('select-hour', HOUR_RANGE.start, HOUR_RANGE.end);
-            createOptions('select-minute', MINUTE_RANGE.start, MINUTE_RANGE.end);
-            
-            // لإظهار الواجهة بعد التهيئة
-            quizContainer.classList.remove('hidden-element');
-        };
-
-        // --- وظيفة تحديث المؤقت ---
-        const updateCountdown = () => {
-            const now = new Date().getTime();
-            const distance = TARGET_DATE - now;
-
-            if (distance < 0) {
-                countdownContainer.style.display = 'none';
-                initializeQuiz();
-                clearInterval(countdownInterval);
-                return;
-            }
-
-            // حساب الوقت
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('countdown-timer').innerHTML = `
-                <div class="time-unit"><span>${d}</span> أيام</div>
-                <div class="time-unit"><span>${h}</span> ساعات</div>
-                <div class="time-unit"><span>${m}</span> دقائق</div>
-                <div class="time-unit"><span>${s}</span> ثواني</div>
-            `;
-        };
-
-        // تشغيل المؤقت
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        updateCountdown();
-    </script>
-</body>
-</html>
