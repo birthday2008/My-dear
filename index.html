@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الحب السرية</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="petals-container">
+        <div class="petal">🌸</div><div class="petal">❤️</div><div class="petal">🌸</div><div class="petal">❤️</div>
+    </div>
+
+    <div class="container">
+        <div id="countdown-card" class="card fade-in">
+            <h1 class="title">نبض قلبي ينتظرك...</h1>
+            <div id="timer" class="timer">
+                <div class="time-box"><span id="days">00</span><p>أيام</p></div>
+                <div class="time-box"><span id="hours">00</span><p>ساعات</p></div>
+                <div class="time-box"><span id="minutes">00</span><p>دقائق</p></div>
+                <div class="time-box"><span id="seconds">00</span><p>ثواني</p></div>
+            </div>
+            <p class="message">الموعد: 18/12/2025 الساعة 00:00 </p>
+        </div>
+
+        <div id="quiz-card" class="card hidden">
+            <h1 class="title">أثبتي هويتك يا أميرتي 👑</h1>
+            <form id="quiz-form">
+                <div class="input-group">
+                    <label>تاريخ ذكرى غالية علينا:</label>
+                    <div class="select-row">
+                        <select id="sel-day" class="custom-select" required><option value="">اليوم</option></select>
+                        <select id="sel-month" class="custom-select" required><option value="">الشهر</option></select>
+                        <select id="sel-year" class="custom-select" required><option value="">السنة</option></select>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>توقيت تلك اللحظة:</label>
+                    <div class="select-row">
+                        <select id="sel-hour" class="custom-select" required><option value="">ساعة</option></select>
+                        <select id="sel-min" class="custom-select" required><option value="">دقيقة</option></select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>الرمز السري الخاص بنا:</label>
+                    <input type="tel" id="answer-pin" class="custom-input" placeholder="اكتبي الرمز هنا" maxlength="3" required>
+                </div>
+                <button type="submit" class="btn-submit">فتح عالمنا الخاص ❤️</button>
+            </form>
+            <p id="error" class="error-msg"></p>
+        </div>
+    </div>
+
+    <script>
+        // موعد فتح الموقع (18 ديسمبر 2025 الساعة 15:05)
+        const targetDate = new Date(2025, 11, 8, 0, 0, 0).getTime();
+
+        const fillSelect = (id, start, end) => {
+            const sel = document.getElementById(id);
+            for(let i=start; i<=end; i++) {
+                let val = i < 10 ? "0" + i : i;
+                sel.innerHTML += `<option value="${i}">${val}</option>`;
+            }
+        };
+
+        fillSelect('sel-day', 1, 31);
+        fillSelect('sel-month', 1, 12);
+        fillSelect('sel-year', 2020, 2025);
+        fillSelect('sel-hour', 0, 23);
+        fillSelect('sel-min', 0, 59);
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            if (diff <= 0) {
+                document.getElementById('countdown-card').classList.add('hidden');
+                document.getElementById('quiz-card').classList.remove('hidden');
+                clearInterval(timerInterval);
+                return;
+            }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById('days').innerText = d;
+            document.getElementById('hours').innerText = h;
+            document.getElementById('minutes').innerText = m;
+            document.getElementById('seconds').innerText = s;
+        }
+        const timerInterval = setInterval(updateTimer, 1000);
+        updateTimer();
+
+        document.getElementById('quiz-form').onsubmit = function(e) {
+            e.preventDefault();
+            
+            // تحقق التاريخ (يمكنك تعديل القيم هنا)
+            const isDateCorrect = 
+                document.getElementById('sel-day').value == "23" && 
+                document.getElementById('sel-month').value == "8" && 
+                document.getElementById('sel-year').value == "2024";
+            
+            // تحقق الوقت
+            const isTimeCorrect = 
+                document.getElementById('sel-hour').value == "1" && 
+                document.getElementById('sel-min').value == "29";
+            
+            const pin = document.getElementById('answer-pin').value;
+
+            // تم تعديل الرمز السري إلى 134
+            if(isDateCorrect && isTimeCorrect && pin === "143") {
+                window.location.href = "messages.html";
+            } else {
+                document.getElementById('error').innerText = "بيانات خاطئة، حاولي ثانية يا روحي";
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسائلي لكِ ❤️</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="petals-container">
+        <div class="petal">🌸</div><div class="petal">❤️</div><div class="petal">🌸</div><div class="petal">❤️</div>
+    </div>
+
+    <div class="container">
+        <div class="card fade-in">
+            <div class="icon-header">✉️</div>
+            
+            <h1 id="msg-title" class="title">الرسالة الأولى</h1>
+            
+            <div class="content-box">
+                <p id="msg-content" class="content-text">
+                    أنتِ أجمل صدفة حدثت في حياتي، ومنذ ذلك اليوم وأنا أشعر أنني ملكت العالم بوجودك بجانبي.
+                </p>
+            </div>
+            
+            <div class="nav-buttons">
+                <button id="prevBtn" class="btn-nav secondary" onclick="changePage(-1)" style="visibility:hidden">السابق</button>
+                <button id="nextBtn" class="btn-nav primary" onclick="changePage(1)">التالي</button>
+            </div>
+
+            <div class="page-indicator">
+                <span id="currentPageNum">1</span> / 4
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // مصفوفة الرسائل - يمكنك تعديل النصوص هنا بسهولة
+        const messages = [
+            { 
+                t: "الرسالة الأولى: البداية", 
+                c: "أنتِ أجمل صدفة حدثت في حياتي، ومنذ ذلك اليوم وأنا أشعر أنني ملكت العالم بوجودك بجانبي. كل لحظة معكِ هي هدية من السماء." 
+            },
+            { 
+                t: "الرسالة الثانية: حبك", 
+                c: "حبك ليس مجرد كلمة أقولها، بل هو الأمان الذي أبحث عنه دائماً في زحمة الحياة. أنتِ وطني وملاذي الوحيد." 
+            },
+            { 
+                t: "الرسالة الثالثة: وعدي لكِ", 
+                c: "أعدكِ أن أكون لكِ سنداً وكتفاً لا يميل، وأن أحبك في كل يوم أكثر من الذي قبله، مهما طالت المسافات أو مرت السنوات." 
+            },
+            { 
+                t: "الرسالة الرابعة: النهاية", 
+                c: "شكراً لأنكِ في حياتي، وشكراً لكل لحظة جميلة قضيناها معاً. هذه الصفحة هي مجرد بداية لحكايتنا الطويلة.. أحبك للأبد ❤️" 
+            }
+        ];
+
+        let currentPage = 0;
+
+        function changePage(direction) {
+            currentPage += direction;
+
+            // تحديث المحتوى مع تأثير بسيط
+            const contentBox = document.querySelector('.content-box');
+            contentBox.style.opacity = 0;
+            
+            setTimeout(() => {
+                document.getElementById('msg-title').innerText = messages[currentPage].t;
+                document.getElementById('msg-content').innerText = messages[currentPage].c;
+                document.getElementById('currentPageNum').innerText = currentPage + 1;
+
+                // التحكم في ظهور الأزرار
+                document.getElementById('prevBtn').style.visibility = currentPage === 0 ? "hidden" : "visible";
+                
+                const nextBtn = document.getElementById('nextBtn');
+                if (currentPage === messages.length - 1) {
+                    nextBtn.innerText = "نهاية";
+                } else {
+                    nextBtn.innerText = "التالي";
+                }
+
+                // إذا ضغطت "نهاية" في آخر صفحة
+                if (currentPage >= messages.length) {
+                    window.location.href = "index.html"; 
+                }
+                
+                contentBox.style.opacity = 1;
+            }, 300);
+        }
+    </script>
+</body>
+</html>
