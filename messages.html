@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسائلي لكِ ❤️</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="petals-container">
+        <div class="petal">🌸</div><div class="petal">❤️</div><div class="petal">🌸</div><div class="petal">❤️</div>
+    </div>
+
+    <div class="container">
+        <div class="card fade-in">
+            <div class="icon-header" id="msg-icon">💖</div>
+            
+            <h1 id="msg-title" class="title">تحميل...</h1>
+            
+            <div class="content-box">
+                <p id="msg-content" class="content-text"></p>
+            </div>
+            
+            <div class="nav-buttons">
+                <button id="prevBtn" class="btn-nav secondary" onclick="changePage(-1)">السابق</button>
+                <button id="nextBtn" class="btn-nav primary" onclick="changePage(1)">التالي</button>
+            </div>
+
+            <div class="page-indicator">
+                صفحة <span id="currentPageNum">1</span> من 4
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // ✍️ اكتب رسائلك هنا (يمكنك كتابة نصوص طويلة جداً)
+        // ==========================================
+        const messages = [
+            { 
+                t: "إلى حبيبتي الغالية", 
+                i: "💖",
+                c: "هنا يمكنك كتابة الرسالة الأولى. لقد قمت بتوسيع المساحة لتستوعب كلماتك مهما كانت طويلة. الخط الآن كبير وواضح، والمسافات بين الأسطر مريحة جداً للعين لتقرأها بكل حب." 
+            },
+            { 
+                t: "لحظاتنا التي لا تُنسى", 
+                i: "✨",
+                c: "هنا الرسالة الثانية. يمكنك وصف ذكرياتنا الجميلة بالتفصيل. التصميم يضمن أن النص سيظهر في منتصف البطاقة بشكل أنيق ومنظم، مما يعطي قيمة أكبر لكل كلمة تكتبها." 
+            },
+            { 
+                t: "وعدي الأبدي لكِ", 
+                i: "💍",
+                c: "الرسالة الثالثة هي مكان للوعود. اكتب هنا كل ما يجول في خاطرك من مشاعر صادقة. لا تقلق بشأن طول النص، فالبطاقة ستتكيف مع ما تكتبه لتبدو دائماً متناسقة." 
+            },
+            { 
+                t: "أحبكِ للأبد", 
+                i: "🌹",
+                c: "الرسالة الرابعة والختامية. هنا يمكنك وضع الخاتمة الأكثر رمانسية. شكراً لأنكِ في حياتي، وشكراً لأنكِ جعلتِ عالمي أجمل بوجودكِ فيه. أحبكِ اليوم وغداً وإلى الأبد." 
+            }
+        ];
+        // ==========================================
+
+        let currentPage = 0;
+
+        function showMessage() {
+            const contentBox = document.querySelector('.content-box');
+            const card = document.querySelector('.card');
+            
+            // تأثير اختفاء بسيط عند التنقل
+            contentBox.style.opacity = 0;
+            
+            setTimeout(() => {
+                const msg = messages[currentPage];
+                document.getElementById('msg-title').innerText = msg.t;
+                document.getElementById('msg-content').innerText = msg.c;
+                document.getElementById('msg-icon').innerText = msg.i;
+                document.getElementById('currentPageNum').innerText = currentPage + 1;
+
+                // إظهار/إخفاء زر السابق
+                document.getElementById('prevBtn').style.visibility = currentPage === 0 ? "hidden" : "visible";
+                
+                // تغيير نص زر التالي في الصفحة الأخيرة
+                const nextBtn = document.getElementById('nextBtn');
+                nextBtn.innerText = currentPage === messages.length - 1 ? "نهاية" : "التالي";
+                
+                contentBox.style.opacity = 1;
+            }, 300);
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+
+            if (currentPage >= messages.length) {
+                // ماذا يحدث عند الضغط على "نهاية"
+                alert("أتمنى أن تكون رسائلي قد أسعدت قلبكِ ❤️");
+                window.location.href = "index.html"; 
+                return;
+            }
+            showMessage();
+        }
+
+        // تشغيل أول رسالة عند فتح الصفحة
+        window.onload = showMessage;
+    </script>
+</body>
+</html>
