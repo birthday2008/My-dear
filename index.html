@@ -56,7 +56,7 @@
 
     <script>
         // موعد فتح الموقع (18 ديسمبر 2025 الساعة 15:05)
-        const targetDate = new Date(2025, 11, 17, 15, 35, 0).getTime();
+        const targetDate = new Date(2025, 11, 17, 23, 59, 59).getTime();
 
         const fillSelect = (id, start, end) => {
             const sel = document.getElementById(id);
@@ -110,7 +110,7 @@
             const pin = document.getElementById('answer-pin').value;
 
             // تم تعديل الرمز السري إلى 134
-            if(isDateCorrect && isTimeCorrect && pin === "143") {
+            if(isDateCorrect && isTimeCorrect && pin === "84") {
                 window.location.href = "messages.html";
             } else {
                 document.getElementById('error').innerText = "بيانات خاطئة، حاولي ثانية يا روحي";
